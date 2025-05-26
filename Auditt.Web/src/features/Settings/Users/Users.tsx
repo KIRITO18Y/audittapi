@@ -39,7 +39,7 @@ export const Users = () => {
                 {users?.map((user) => (
                     <div
                         key={user.id}
-                        className="flex items-center space-x-6 border p-4 rounded-xl shadow-md w-max">
+                        className="flex items-center space-x-6 border border-gray-300 p-4 rounded-xl shadow-md w-max">
                         <div>
                             <img
                                 src={user.urlProfile}
@@ -51,23 +51,23 @@ export const Users = () => {
                             <span className="font-bold text-sm text-gray-900 uppercase">
                                 {user.firstName} {user.lastName}
                             </span>
-                            <span className="text-sm text-gray-500">{user.email}</span>
+                            <span className="text-sm text-gray-500 mr-2">{user.email}</span>
                         </div>
-                        <div className="font-bold text-sm text-indigo-900 uppercase">
+                        <div className="font-bold text-sm text-indigo-900">
                             <span>{user.roleName}</span>
                         </div>
 
-                        <div className="flex items-center space-x-1">
-                            <span className="text-sm font-semibold text-lime-600"><UserStatusLabel idEstado={Number(user.idEstado)} /></span>
+                        <div className="flex items-center space-x-2">
+                            <span className="text-sm font-semibold text-lime-600"><UserStatusLabel idEstado={Number(user.idEstado)}/></span>
                         </div>
 
                         <div className="flex items-center space-x-2">
-                            <div className="w-8 h-8 flex items-center justify-center rounded-full border border-blue-300 text-blue-900 cursor-pointer">
-                                <FontAwesomeIcon icon={faBars} className="text-blue-400" />
+                            <div className="w-8 h-8 flex items-center justify-center rounded-full border border-blue-300 text-blue-900 cursor-pointer mr-4">
+                                <FontAwesomeIcon icon={faBars} className="text-blue-400"/>
                             </div>
 
-                            <div className="w-8 h-8 flex items-center justify-center rounded-full border border-blue-300 text-blue-900 cursor-pointer">
-                                <FontAwesomeIcon icon={faUser} className="text-blue-500" />
+                            <div className="w-8 h-8 flex items-center justify-center rounded-full border border-blue-300 text-blue-900 cursor-pointer mr-4">
+                                <FontAwesomeIcon icon={faUser} className="text-blue-500"/>
                             </div>
                             <div className="w-8 h-8 flex items-center justify-center rounded-full bg-green-200 text-green-600 cursor-pointer">
                                 <FontAwesomeIcon icon={faPen} className="" onClick={() => handleClickDetail(user)} />
@@ -80,10 +80,10 @@ export const Users = () => {
                 <UserCreate/>
             </OffCanvas>
             {
-                user &&
-                <OffCanvas titlePrincipal='Actualizar Usuario' visible={visibleUpdate} xClose={() => setVisibleUpdate(false)} position={Direction.Right}>
-                    <UserUpdate data={user} />
-                </OffCanvas>
+             user &&
+            <OffCanvas titlePrincipal='Actualizar Usuario' visible={visibleUpdate} xClose={() => setVisibleUpdate(false)} position={Direction.Right}>
+                <UserUpdate data={user}/>
+            </OffCanvas>
             }
         </div>
     );

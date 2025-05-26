@@ -85,6 +85,7 @@ export const Questions = () => {
                             <h3 className="text-lg font-semibold">Preguntas de la guía: {selectedGuide.name}</h3>
                         </div>
                     )}
+
                     {questions
                         ?.filter((question) => question.idGuide === selectedIdguide)
                         .map((question) => (

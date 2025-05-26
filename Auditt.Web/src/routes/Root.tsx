@@ -27,13 +27,11 @@ export default function Root() {
       return <div className="flex justify-center items-center h-screen">Loading...</div>;
    }
 
-
    return (
       <div className=" bg-gray-100">
          <div
             id="main"
-            className="flex bg-gray-900"
-         >
+            className="flex bg-gray-900">
             <Sidebar/>
             <div
                id="detail"
@@ -41,7 +39,6 @@ export default function Root() {
                <Outlet/>
             </div>
          </div>
-
       </div>
    );
 }

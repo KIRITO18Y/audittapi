@@ -40,9 +40,9 @@ export const Guide = () => {
                 await deleteGuide.mutateAsync(id);
             }
         })
-    }
+    };
 
-    if (queryGuide.isLoading) return <Bar />
+    if (queryGuide.isLoading) return <Bar/>
 
     const normalizeText = (text: string) =>
         text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -52,7 +52,7 @@ export const Guide = () => {
         const fields = `${guide?.name}`;
         const words = normalizeText(fields).split(/\s+/);
         return words.some(word => word.startsWith(search));
-    })
+    });
 
     return (
         <div className="p-6 w-full">
@@ -68,7 +68,7 @@ export const Guide = () => {
                                     placeholder="Buscar Guidas"
                                     className="border rounded bg-white px-3 py-1 transition duration-200 border-gray-300 hover:border-indigo-500 
                                  hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-400"/>
-                                  <FontAwesomeIcon icon={faMagnifyingGlass} className="fas fa-search absolute right-2 top-2 mr-2 text-gray-400"/>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} className="fas fa-search absolute right-2 top-2 mr-2 text-gray-400" />
                             </div>
                         </div>
                         <button onClick={() => setVisible(true)} className="bg-[#392F5A] hover:bg-indigo-900 text-white px-6 rounded-lg font-semibold mb-5 mr-2">
@@ -92,7 +92,7 @@ export const Guide = () => {
                                 <div className="text-sm px-2 py-2 border border-gray-300 text-center">{guide.questionsCount}</div>
                                 <div className="flex justify-center text-sm px-2 border border-gray-300 py-1">
                                     <div onClick={() => handleGuideDetail(guide)}>
-                                        <ButtonUpdate />
+                                        <ButtonUpdate/>
                                     </div>
                                     <div>
                                         <ButtonPlay url={"Questions"} />
@@ -104,14 +104,14 @@ export const Guide = () => {
                     </div>
                 </div>
                 <OffCanvas titlePrincipal="Crear Instrumentos" visible={visible} xClose={() => setVisible(false)} position={Direction.Right}>
-                    <GuidesCreate />
+                    <GuidesCreate/>
                 </OffCanvas>
                 {guide && (
                     <OffCanvas titlePrincipal="Detalle Instrumentos" visible={visibleUpdate} xClose={() => setUpdateVisible(false)} position={Direction.Right}>
-                        <GuideUpdate data={guide} />
+                        <GuideUpdate data={guide}/>
                     </OffCanvas>
                 )}
             </div>
         </div>
-    );
+    )
 };
