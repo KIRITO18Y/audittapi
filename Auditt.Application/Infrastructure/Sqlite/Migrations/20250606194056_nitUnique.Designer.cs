@@ -3,6 +3,7 @@ using System;
 using Auditt.Application.Infrastructure.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Auditt.Application.Infrastructure.Sqlite.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606194056_nitUnique")]
+    partial class nitUnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.4");
@@ -212,9 +215,6 @@ namespace Auditt.Application.Infrastructure.Sqlite.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("StatusId")
-                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -447,6 +447,9 @@ namespace Auditt.Application.Infrastructure.Sqlite.Migrations
                     b.Property<int>("IdAvatar")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("InstitutionId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -473,6 +476,8 @@ namespace Auditt.Application.Infrastructure.Sqlite.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
+
+                    b.HasIndex("InstitutionId");
 
                     b.HasIndex("RoleId");
 
@@ -520,21 +525,6 @@ namespace Auditt.Application.Infrastructure.Sqlite.Migrations
                     b.HasIndex("EquivalenceId");
 
                     b.ToTable("Valuations");
-                });
-
-            modelBuilder.Entity("InstitutionUser", b =>
-                {
-                    b.Property<int>("InstitutionsId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("UsersId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("InstitutionsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("InstitutionUser");
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
@@ -669,6 +659,10 @@ namespace Auditt.Application.Infrastructure.Sqlite.Migrations
 
             modelBuilder.Entity("Auditt.Application.Domain.Entities.User", b =>
                 {
+                    b.HasOne("Auditt.Application.Domain.Entities.Institution", null)
+                        .WithMany("Users")
+                        .HasForeignKey("InstitutionId");
+
                     b.HasOne("Auditt.Application.Domain.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")
@@ -695,21 +689,6 @@ namespace Auditt.Application.Infrastructure.Sqlite.Migrations
                     b.Navigation("Assessment");
 
                     b.Navigation("Equivalence");
-                });
-
-            modelBuilder.Entity("InstitutionUser", b =>
-                {
-                    b.HasOne("Auditt.Application.Domain.Entities.Institution", null)
-                        .WithMany()
-                        .HasForeignKey("InstitutionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Auditt.Application.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PermissionRole", b =>
@@ -742,6 +721,8 @@ namespace Auditt.Application.Infrastructure.Sqlite.Migrations
             modelBuilder.Entity("Auditt.Application.Domain.Entities.Institution", b =>
                 {
                     b.Navigation("DataCuts");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("Auditt.Application.Domain.Entities.Role", b =>

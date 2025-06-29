@@ -11,6 +11,7 @@ using Auditt.Application.Infrastructure.Sqlite;
 using Auditt.Domain.Authentications;
 using Auditt.Infrastructure.Authentications;
 using System.Text;
+using Auditt.Application.Domain.Entities;
 
 namespace Auditt.Application;
 
@@ -52,6 +53,9 @@ public static class DependencyConfig
     {
         builder.Services.AddScoped<IManagerToken, ManagerToken>();
         builder.Services.AddScoped<IFileManager, FileManager>();
+        builder.Services.AddScoped<IExcelImporter<Institution>, InstitutionExcelImporter>();
+        builder.Services.AddScoped<IExcelImporter<Patient>, PatientExcelImporter>();
+        builder.Services.AddScoped<IExcelImporter<Functionary>, FunctionaryExcelImporter>();
     }
 
     public static IServiceCollection AddApplicationCore(this IServiceCollection services)
@@ -91,6 +95,9 @@ public static class DependencyConfig
             connectionString = $"Data Source={fullPath}";
         }
 
+        Console.WriteLine(connectionString);
+        Console.WriteLine("Deimer conexion");
+
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite(connectionString));
 
@@ -105,11 +112,11 @@ public static class DependencyConfig
         {
             options.AddPolicy("AllowSpecificOrigin", builder =>
             {
-                builder.WithOrigins("http://localhost:5173", "https://localhost:5173", "http://localhost:5000", "http://localhost:7045")  // Permite cualquier origen
-                .AllowCredentials()       
+                builder.WithOrigins("http://localhost:5173", "https://localhost:5173", "http://localhost:5000", "http://localhost:7045", "http://audittweb.host.imagyapp.net", "https://audittweb.host.imagyapp.net", "https://audittapi.host.imagyapp.net")  // Permite cualquier origen
+                .AllowCredentials()
                 .AllowAnyMethod()  // Permite cualquier método HTTP (GET, POST, PUT, DELETE, etc.)
                 .AllowAnyHeader(); // Permite cualquier cabecera
-                        
+
             });
         });
 
