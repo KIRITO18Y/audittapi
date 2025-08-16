@@ -2,6 +2,7 @@
 using Carter;
 using Auditt.Application.Infrastructure.Sqlite;
 using Auditt.Reports;
+using Auditt.Application.Infrastructure.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,7 +38,7 @@ var app = builder.Build();
 // 🔄 Aplica las migraciones automáticamente si no estás en desarrollo
 //if (!app.Environment.IsDevelopment())
 //{
-    await app.MigrateDatabaseAsync(); // <- Esta línea es clave
+await app.MigrateDatabaseAsync(); // <- Esta línea es clave
 //}
 app.UseHttpsRedirection();
 app.UseOpenApi();
@@ -48,7 +49,9 @@ app.UseReDoc(settings =>
     settings.DocumentPath = "/swagger/v1/swagger.json";
 });
 app.UseCors("AllowSpecificOrigin");
+app.UseMiddleware<JwtCookieMiddleware>(); // Procesar token de cookies ANTES de autenticación
 app.UseAuthentication();
+app.UseMiddleware<RoleAuthorizationMiddleware>(); // Agregar middleware de validación de roles
 app.UseAuthorization();
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html");

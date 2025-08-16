@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using Auditt.Application.Infrastructure.Authorization;
 
 namespace Auditt.Application.Features.Roles;
 
@@ -21,6 +22,7 @@ public class DeleteRole : ICarterModule
         })
         .WithName(nameof(DeleteRole))
         .WithTags(nameof(Role))
+        .RequireAdmin() // Solo ADMIN puede eliminar roles
         .ProducesValidationProblem()
         .Produces<DeleteRoleResponse>(StatusCodes.Status200OK);
     }
